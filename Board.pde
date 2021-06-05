@@ -13,13 +13,32 @@ class Board {
     actor.setTileDimensions(tileDimensions);
     actors.add(actor);
   }
+
+  private void drawCheck(int x, int y, boolean hovered) {
+    int posX = tileDimensions * x;
+    int posY = tileDimensions * y;
+    boolean isWhite = (x + y) % 2 == 1;
+
+    fill(isWhite ? (hovered ? 200 : 255) : (hovered ? 200 : 120));
+    rect(posX, posY, tileDimensions, tileDimensions);
+  }
   
-  public void draw() {
-    fill(255, 200, 200);
+  public Actor getActor(int posX, int posY) {
+    Actor actor = null;
+    int i = 0;
+    while(actor == null && i < actors.size()) {
+      Actor _actor = actors.get(i);
+      if (_actor.posX == posX && _actor.posY == posY) actor = _actor;
+      i++;
+    }
+    return actor;
+  }
+  
+  public void draw(int hoveredX, int hoveredY) {
+    Actor hoveredActor = getActor(hoveredX, hoveredY);
     for(int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
-        fill((i + j) % 2 == 1 ? 255 : 120);
-        rect(tileDimensions * i, tileDimensions * j, tileDimensions, tileDimensions);
+        drawCheck(i, j, hoveredActor != null && hoveredX == i && hoveredY == j);
       }
     }
     for(int i = 0; i < actors.size(); i++) {

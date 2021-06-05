@@ -21,8 +21,9 @@ class Game {
     board.addActor(new Queen(4, white ? 7 : 0, white));
   }
 
-  
   public void draw() {
-    board.draw();
+    int hoveredX = (int)(((float)mouseX / 800.0) * 8);
+    int hoveredY = (int)(((float)mouseY / 800.0) * 8);
+    board.draw(hoveredX, hoveredY);
   }
 }

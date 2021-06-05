@@ -1,6 +1,6 @@
 class Actor {
-  int posX = 0;
-  int posY = 0;
+  public int posX = 0;
+  public int posY = 0;
   int tileDimensions = 0;
   
   boolean white = false;
