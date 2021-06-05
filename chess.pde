@@ -9,4 +9,8 @@ void setup() {
 void draw() {
   game.draw();
 }
+
+void mousePressed() {
+  game.mouseClicked();
+}
   
