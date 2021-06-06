@@ -42,12 +42,14 @@ class Game {
     board.addActor(new Queen(4, white ? 7 : 0, white));
   }
 
+  // Drawing game
   public void draw() {
     int hoveredX = (int)(((float)mouseX / 800.0) * 8);
     int hoveredY = (int)(((float)mouseY / 800.0) * 8);
     board.draw(hoveredX, hoveredY);
   }
 
+  // Forwarding click events
   public void mouseClicked() {
     board.mouseClicked();
   }

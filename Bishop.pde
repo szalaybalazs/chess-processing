@@ -4,11 +4,11 @@ class Bishop extends Actor {
     imageName = "Bishop";
   }
 
+  // Generate diagonal moves
   public ArrayList<Move> getAvailableMoves(Board board) {
     ArrayList<Move> moves = new ArrayList<Move>();
     
     // Forward Right
-    // TODO: check for vertical as well
     int fr = 0;
     while (posY + direction * fr >= 0 && posY + direction * fr <= 7) {
       fr++;

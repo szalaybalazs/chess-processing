@@ -5,6 +5,7 @@ class Queen extends Actor {
     imageName = "Queen";
   }
 
+  // Creating all possible moves
   public ArrayList<Move> getAvailableMoves(Board board) {
     ArrayList<Move> moves = new ArrayList<Move>();
     

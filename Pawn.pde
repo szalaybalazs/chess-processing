@@ -20,6 +20,8 @@ class Pawn extends Actor {
     // Checking take opportunities
     if (frontLeft != null && !isAlly(frontLeft)) moves.add(new Move(frontLeft.posX, frontLeft.posY, frontLeft));
     if (frontRight != null && !isAlly(frontRight)) moves.add(new Move(frontRight.posX, frontRight.posY, frontRight));
+
+    // TODO: special pawn moves
     return moves;
   }
 }

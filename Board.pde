@@ -1,17 +1,22 @@
 class Board {
+  // Dimensions
   private int dim = 0;
   private int tileDimensions = 0;
 
+  // Store selected actor and selection state
   private boolean selection = false;
-  private int activeX = 0;
-  private int activeY = 0;
-
   Actor selectedActor;
+  
+  // Store current player
+  private boolean currentPlayerIsWhite = true;
 
-
+  // Available moves
   ArrayList<Move> moves = new ArrayList<Move>();
+
+  // Store all actors
   ArrayList<Actor> actors = new ArrayList<Actor>();
 
+  // Setup board
   public void setup(int dimensions) {
     dim = dimensions;
     tileDimensions = dimensions / 8;
@@ -33,6 +38,17 @@ class Board {
       i++;
     }
     return actor;
+  }
+
+  // Get all actors of a player
+  public ArrayList<Actor> getActors(boolean white) {
+    ArrayList<Actor> playerActors = new ArrayList<Actor>();
+    for (int i = 0; i < actors.size(); i++) {
+      Actor actor = actors.get(i);
+      if (actor.white == white) playerActors.add(actor);
+    }
+
+    return playerActors;
   }
 
   // Setup all actors
@@ -62,12 +78,13 @@ class Board {
     rect(posX, posY, tileDimensions, tileDimensions);
   }
 
+  // Handle clicks
   public void mouseClicked() {
     int x = (int)(((float)mouseX / 800.0) * 8);
     int y = (int)(((float)mouseY / 800.0) * 8);
 
     Actor actor = getActor(x, y);
-    if (actor != null && !selection) {
+    if (actor != null && !selection && actor.white == currentPlayerIsWhite) {
       selectedActor = actor;
       moves = actor.getAvailableMoves(this);
       selection = true;
@@ -82,6 +99,7 @@ class Board {
 
       if (move != null) {
         selectedActor.moveTo(move);
+        currentPlayerIsWhite = !currentPlayerIsWhite;
         if (move.target != null) {
           int targetIndex = 0;
           Actor targetActor = null;
@@ -97,7 +115,10 @@ class Board {
           }
 
           actors.remove(targetIndex);
-          // TODO: save takes
+        }
+        for(int k = 0; k < actors.size(); k++) {
+          Actor dangerActor = actors.get(k);
+          dangerActor.checkForDanger(this);
         }
       }
       selectedActor = null;
@@ -105,6 +126,7 @@ class Board {
     }
   }
   
+  // Draw board, actors and events
   public void draw(int hoveredX, int hoveredY) {
     for (int i = 0; i < 8; i++) {
       for (int j = 0; j < 8; j++) {
@@ -120,6 +142,7 @@ class Board {
     }
     for (int i = 0; i < actors.size(); i++) {
       Actor actor = actors.get(i);
+      if (actor.isInDanger(this)) drawRect(actor.posX, actor.posY, 255, 120, 120, 120);
       actor.draw(selectedActor != null && actor.id == selectedActor.id);
     }
   }

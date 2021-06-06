@@ -7,6 +7,7 @@ class Knight extends Actor {
   public ArrayList<Move> getAvailableMoves(Board board) {
     ArrayList<Move> moves = new ArrayList<Move>();
     
+    // Collecting targetable actors
     Actor frontRight = board.getActor(posX + 1, posY + direction * 2);
     Actor frontLeft = board.getActor(posX - 1, posY + direction * 2);
     Actor backRight = board.getActor(posX + 1, posY - direction * 2);

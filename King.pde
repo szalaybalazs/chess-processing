@@ -4,10 +4,12 @@ class King extends Actor {
     imageName = "King";
   }
 
+  private boolean isKingInDanger = false;
+
   public ArrayList<Move> getAvailableMoves(Board board) {
     ArrayList<Move> moves = new ArrayList<Move>();
     
-    // TODO: check if field is attacked
+    // Creating all possible moves
     {
       Move move = new Move(posX, posY + direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
@@ -59,5 +61,25 @@ class King extends Actor {
     }
 
     return moves;
+  }
+
+  // Checking is king is in check
+  public void checkForDanger(Board board) {
+    ArrayList<Actor> actors = board.getActors(!white);
+    isKingInDanger = false;
+    
+    for (int i = 0; i < actors.size(); i++) {
+      Actor actor = actors.get(i);
+      ArrayList<Move> moves = actor.getAvailableMoves(board);
+      for (int j = 0; j < moves.size(); j++) {
+        Move move = moves.get(j);
+        if (move.target == this) isKingInDanger = true;
+      }
+    }
+  }
+
+  // Returning predefined danger
+  public boolean isInDanger(Board board) {
+    return isKingInDanger;
   }
 }

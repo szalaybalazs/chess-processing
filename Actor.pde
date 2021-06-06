@@ -1,7 +1,13 @@
+// Actor move
 class Move {
+  // Target actor
   public Actor target;
+
+  // Target position
   public int x;
   public int y;
+
+  // Creating move
   public Move(int x, int y, Actor target) {
     this.target = target;
     this.x = x;
@@ -17,6 +23,7 @@ class Actor {
   public int posX = 0;
   public int posY = 0;
 
+  // The forward direction of the actor, depends on color
   public int direction = 0;
 
   // Stored moves
@@ -47,6 +54,7 @@ class Actor {
     this.id = (int)(random(1000) * 1000.0);
   }
   
+  // Seup actor
   public void setup() {
     String colorName = white ? "White" : "Black";
     img = loadImage("images/" + colorName + imageName + ".png");
@@ -57,26 +65,26 @@ class Actor {
     tileDimensions = dimensions;
   }
 
+  // Check if an other actor is ally
   public boolean isAlly(Actor actor) {
     if (actor == null) return false;
     return actor.white == this.white;
   }
   
+  // Generated all available moves
   public ArrayList<Move> getAvailableMoves(Board board) {
-    ArrayList<Move> moves = new ArrayList<Move>();
-
-    return moves;
+    // Return empty array
+    return new ArrayList<Move>();
   }
 
-  public void storeTake(Actor actor) {
-    // TODO: store take
-  }
-
+  // Move actor to new location
+  // This is where animation would happen
   public void moveTo(Move move) {
     previousMoves.add(move);
     setPosition(move.x, move.y);
   }
   
+  // Set the position of the actor
   public void setPosition(int x, int y) {
     posX = x;
     posY = y;
@@ -98,4 +106,12 @@ class Actor {
     imageMode(CENTER);
     image(img, x + tileDimensions / 2, y + tileDimensions / 2, tileDimensions, tileDimensions);
   }
+
+  // Return if actor is in danger (only used by kings)
+  public boolean isInDanger(Board board) {
+    return false;
+  }
+
+  // Check if actor is in danger (only used by kings)
+  public void checkForDanger(Board board) {}
 }

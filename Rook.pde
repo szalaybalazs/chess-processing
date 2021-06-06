@@ -4,6 +4,7 @@ class Rook extends Actor {
     imageName = "Rook";
   }
 
+  // Creating all vertical and horizontal moves
   public ArrayList<Move> getAvailableMoves(Board board) {
     ArrayList<Move> moves = new ArrayList<Move>();
     
