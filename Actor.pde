@@ -155,6 +155,7 @@ class Actor {
   // Check if actor is in danger (only used by kings)
   public void checkForDanger(Board board) {}
 
+  // Check if move is a check solution
   public boolean checkForCheckSolution(Board board, Move move) {
     boolean result = false;
     int prevX = this.posX;
