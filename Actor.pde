@@ -1,5 +1,8 @@
 // Actor move
 class Move {
+  // Source actor
+  public Actor source;
+  
   // Target actor
   public Actor target;
 
@@ -34,11 +37,13 @@ class Actor {
   
   // Whether actor is white or black
   boolean white = false;
+  public Player player;
+  public Player opponent;
   
   // Image of actor
   PImage img;
 
-  public String imageName = "Pawn";
+  public String name = "Pawn";
   public Actor(int posX, int posY, boolean white) {
     super();
     
@@ -53,11 +58,33 @@ class Actor {
     // This is bad practise, should use either static auto incrementation on uuid
     this.id = (int)(random(1000) * 1000.0);
   }
+
+  public Actor(int posX, int posY) {
+    super();
+    
+    // Storing initial position and color
+    this.posX = posX;
+    this.posY = posY;
+    
+    // This is bad practise, should use either static auto incrementation on uuid
+    this.id = (int)(random(1000) * 1000.0);
+  }
+
+  public void setColor(boolean white) {
+    // Setting forward direction
+    direction = white ? -1 : 1;
+    this.white = white;
+  }
+
+  public void setPlayer(Player player, Player oppponent) {
+    this.player = player;
+    this.opponent = oppponent;
+  }
   
   // Seup actor
   public void setup() {
     String colorName = white ? "White" : "Black";
-    img = loadImage("images/" + colorName + imageName + ".png");
+    img = loadImage("images/" + colorName + name + ".png");
   }
   
   // Saving tile dimensions
@@ -77,11 +104,24 @@ class Actor {
     return new ArrayList<Move>();
   }
 
+  // Generate all, checked moves
+  public ArrayList<Move> getAllMoves(Board board) {
+    ArrayList<Move> moves = getAvailableMoves(board);
+    for (int i = moves.size() - 1; i >= 0; i--) {
+      Move move = moves.get(i);
+      if (move.x < 0 || move.x > 7) moves.remove(i);
+      else if (move.y < 0 || move.y > 7) moves.remove(i);
+      else if (!checkForCheckSolution(board, move)) moves.remove(i);
+    }
+    return moves;
+  }
+
   // Move actor to new location
   // This is where animation would happen
-  public void moveTo(Move move) {
+  public Actor moveTo(Move move) {
     previousMoves.add(move);
     setPosition(move.x, move.y);
+    return this;
   }
   
   // Set the position of the actor
@@ -114,4 +154,23 @@ class Actor {
 
   // Check if actor is in danger (only used by kings)
   public void checkForDanger(Board board) {}
+
+  public boolean checkForCheckSolution(Board board, Move move) {
+    boolean result = false;
+    int prevX = this.posX;
+    int prevY = this.posY;
+    
+    this.posX = move.x;
+    this.posY = move.y;
+    
+    if (move.target != null) opponent.removeActor(move.target);
+    ArrayList<Move> moves = player.generateAttackedfields(board);
+    result = player.checkSolution(moves);
+    if (move.target != null) opponent.addActor(move.target);
+    
+    this.posX = prevX;
+    this.posY = prevY;
+
+    return !result;
+  }
 }

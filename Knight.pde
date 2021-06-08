@@ -1,7 +1,7 @@
 class Knight extends Actor {
   public Knight(int x, int y, boolean white) {
     super(x, y, white);
-    imageName = "Knight";
+    name = "Knight";
   }
 
   public ArrayList<Move> getAvailableMoves(Board board) {
@@ -27,6 +27,9 @@ class Knight extends Actor {
     if (!isAlly(rightBack)) moves.add(new Move(posX + 2, posY - direction, rightBack));
     if (!isAlly(leftFront)) moves.add(new Move(posX - 2, posY + direction, leftFront));
     if (!isAlly(leftBack)) moves.add(new Move(posX - 2, posY - direction, leftBack));
+
+    for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;
+
     return moves;
   }
 }

@@ -1,7 +1,7 @@
 class Rook extends Actor {
   public Rook(int x, int y, boolean white) {
     super(x, y, white);
-    imageName = "Rook";
+    name = "Rook";
   }
 
   // Creating all vertical and horizontal moves
@@ -67,6 +67,8 @@ class Rook extends Actor {
         break;
       }
     }
+
+    for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;
     
     return moves;
   }

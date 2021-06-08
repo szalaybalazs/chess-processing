@@ -1,7 +1,20 @@
 class Pawn extends Actor {
   public Pawn(int x, int y, boolean white) {
     super(x, y, white);
-    imageName = "Pawn";
+    name = "Pawn";
+  }
+
+  public Actor moveTo(Move move) {
+    previousMoves.add(move);
+    setPosition(move.x, move.y);
+
+    if (move.y == 0 || move.y == 7) {
+      Actor queen = new Queen(move.x, move.y, white);
+      queen.setup();
+      queen.setTileDimensions(tileDimensions);
+      return queen;
+    } 
+    else return this;
   }
 
   public ArrayList<Move> getAvailableMoves(Board board) {
@@ -22,6 +35,8 @@ class Pawn extends Actor {
     if (frontRight != null && !isAlly(frontRight)) moves.add(new Move(frontRight.posX, frontRight.posY, frontRight));
 
     // TODO: special pawn moves
+    for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;
+
     return moves;
   }
 }

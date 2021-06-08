@@ -1,7 +1,7 @@
 class Bishop extends Actor {
   public Bishop(int x, int y, boolean white) {
     super(x, y, white);
-    imageName = "Bishop";
+    name = "Bishop";
   }
 
   // Generate diagonal moves
@@ -55,7 +55,7 @@ class Bishop extends Actor {
 
     // Backward Left
     int bl = 0;
-    while (posY + direction * bl >= 0 && posY + direction * bl <= 7) {
+    while (posY - direction * bl >= 0 && posY - direction * bl <= 7) {
       bl++;
       Move move = new Move(posX - bl, posY - direction * bl, null);
       Actor targetActor = board.getActor(move.x, move.y);
@@ -67,6 +67,8 @@ class Bishop extends Actor {
         break;
       }
     }
+
+    for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;
     
     return moves;
   }

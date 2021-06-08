@@ -1,71 +1,73 @@
 class King extends Actor {
   public King(int x, int y, boolean white) {
     super(x, y, white);
-    imageName = "King";
+    name = "King";
   }
 
   private boolean isKingInDanger = false;
 
   public ArrayList<Move> getAvailableMoves(Board board) {
     ArrayList<Move> moves = new ArrayList<Move>();
-    
+
     // Creating all possible moves
     {
       Move move = new Move(posX, posY + direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
     {
       Move move = new Move(posX + 1, posY + direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
     {
       Move move = new Move(posX - 1, posY + direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
     
     {
       Move move = new Move(posX, posY - direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
     {
       Move move = new Move(posX + 1, posY - direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
     {
       Move move = new Move(posX - 1, posY - direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
     {
       Move move = new Move(posX + 1, posY, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
     {
       Move move = new Move(posX - 1, posY, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!isAlly(targetActor)) moves.add(move);
+      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
     }
+
+    for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;
 
     return moves;
   }
 
   // Checking is king is in check
   public void checkForDanger(Board board) {
-    ArrayList<Actor> actors = board.getActors(!white);
+    ArrayList<Actor> actors = this.opponent.getActors();
     isKingInDanger = false;
     
     for (int i = 0; i < actors.size(); i++) {
@@ -80,6 +82,6 @@ class King extends Actor {
 
   // Returning predefined danger
   public boolean isInDanger(Board board) {
-    return isKingInDanger;
+    return player.checkIfInCheck();
   }
 }

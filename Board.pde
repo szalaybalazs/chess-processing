@@ -3,6 +3,9 @@ class Board {
   private int dim = 0;
   private int tileDimensions = 0;
 
+  public Player whitePlayer = new Player(true);
+  public Player blackPlayer = new Player(false);
+
   // Store selected actor and selection state
   private boolean selection = false;
   Actor selectedActor;
@@ -13,57 +16,41 @@ class Board {
   // Available moves
   ArrayList<Move> moves = new ArrayList<Move>();
 
-  // Store all actors
-  ArrayList<Actor> actors = new ArrayList<Actor>();
+  // Game of the board
+  Game game;
+
+  public void setGame(Game game) {
+    this.game = game;
+  }
 
   // Setup board
   public void setup(int dimensions) {
     dim = dimensions;
     tileDimensions = dimensions / 8;
-  }
-  
-  // Add actor to board
-  public void addActor(Actor actor) {
-    actor.setTileDimensions(tileDimensions);
-    actors.add(actor);
+    whitePlayer.setTileDimensions(tileDimensions);
+    blackPlayer.setTileDimensions(tileDimensions);
   }
 
-  // Get actor on board
-  public Actor getActor(int posX, int posY) {
-    Actor actor = null;
-    int i = 0;
-    while(actor == null && i < actors.size()) {
-      Actor _actor = actors.get(i);
-      if (_actor.posX == posX && _actor.posY == posY) actor = _actor;
-      i++;
-    }
-    return actor;
-  }
-
-  // Get all actors of a player
-  public ArrayList<Actor> getActors(boolean white) {
-    ArrayList<Actor> playerActors = new ArrayList<Actor>();
-    for (int i = 0; i < actors.size(); i++) {
-      Actor actor = actors.get(i);
-      if (actor.white == white) playerActors.add(actor);
-    }
-
-    return playerActors;
-  }
-
-  // Setup all actors
+  // Set up player actors
   public void setupActors() {
-    for (int i = 0; i < actors.size(); i++) {
-      actors.get(i).setup();
-    }
+    whitePlayer.setupActors();
+    blackPlayer.setupActors();
+  }
+
+  // Get any actor
+  public Actor getActor(int x, int y) {
+    Actor actor;
+    actor = whitePlayer.getActor(x, y);
+    if (actor != null) return actor;
+    return blackPlayer.getActor(x, y);
   }
 
   // Draw hoverable rect
   private void drawCheck(int x, int y) {
     boolean isWhite = (x + y) % 2 == 1;
 
-    int col = (isWhite ? 255 : 120);
-    drawRect(x, y, col, col, col);
+    if (isWhite) drawRect(x, y, 239, 239, 239);
+    else drawRect(x, y, 194, 215, 226);
   }
 
   // Draw opaque rect
@@ -86,7 +73,7 @@ class Board {
     Actor actor = getActor(x, y);
     if (actor != null && !selection && actor.white == currentPlayerIsWhite) {
       selectedActor = actor;
-      moves = actor.getAvailableMoves(this);
+      moves = actor.getAllMoves(this);
       selection = true;
     } else if (selection && selectedActor != null) {
       Move move = null;
@@ -98,29 +85,22 @@ class Board {
       }
 
       if (move != null) {
-        selectedActor.moveTo(move);
         currentPlayerIsWhite = !currentPlayerIsWhite;
-        if (move.target != null) {
-          int targetIndex = 0;
-          Actor targetActor = null;
-          while (targetActor == null && targetIndex < actors.size()) {
-            Actor _actor = actors.get(targetIndex);
-            if (
-              _actor.posX == move.target.posX && 
-              _actor.posY == move.target.posY &&
-              !_actor.isAlly(selectedActor)
-            ) {
-              targetActor = _actor;
-            } else targetIndex++;
-          }
+        if (move.target != null) selectedActor.opponent.removeActor(move.target);
+        selectedActor.player.moveActor(selectedActor, move);
 
-          actors.remove(targetIndex);
-        }
-        for(int k = 0; k < actors.size(); k++) {
-          Actor dangerActor = actors.get(k);
-          dangerActor.checkForDanger(this);
+        Player activePlayer = currentPlayerIsWhite ? whitePlayer : blackPlayer;
+        ArrayList<Move> availableMoves = activePlayer.getAllMoves(this);
+
+        if (availableMoves.size() == 0) {
+          boolean stalemate = activePlayer.checkIfInCheck();
+          this.game.setGameState(stalemate ? GameState.DRAW : (!activePlayer.white ? GameState.WHITE_WIN : GameState.BLACK_WIN));
         }
       }
+
+      whitePlayer.getAttackedFields(this);
+      blackPlayer.getAttackedFields(this);
+
       selectedActor = null;
       selection = false;
     }
@@ -140,8 +120,14 @@ class Board {
         else drawRect(move.x, move.y, 255, 0, 0, 120);
       }
     }
-    for (int i = 0; i < actors.size(); i++) {
-      Actor actor = actors.get(i);
+
+    for (int i = 0; i < whitePlayer.actors.size(); i++) {
+      Actor actor = whitePlayer.actors.get(i);
+      if (actor.isInDanger(this)) drawRect(actor.posX, actor.posY, 255, 120, 120, 120);
+      actor.draw(selectedActor != null && actor.id == selectedActor.id);
+    }
+    for (int i = 0; i < blackPlayer.actors.size(); i++) {
+      Actor actor = blackPlayer.actors.get(i);
       if (actor.isInDanger(this)) drawRect(actor.posX, actor.posY, 255, 120, 120, 120);
       actor.draw(selectedActor != null && actor.id == selectedActor.id);
     }

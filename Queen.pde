@@ -2,7 +2,7 @@ class Queen extends Actor {
 
   public Queen(int x, int y, boolean white) {
     super(x, y, white);
-    imageName = "Queen";
+    name = "Queen";
   }
 
   // Creating all possible moves
@@ -117,7 +117,7 @@ class Queen extends Actor {
 
     // Backward Left
     int bl = 0;
-    while (posY + direction * bl >= 0 && posY + direction * bl <= 7) {
+    while (posY - direction * bl >= 0 && posY - direction * bl <= 7) {
       bl++;
       Move move = new Move(posX - bl, posY - direction * bl, null);
       Actor targetActor = board.getActor(move.x, move.y);
@@ -129,6 +129,8 @@ class Queen extends Actor {
         break;
       }
     }
+
+    for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;
     
     return moves;
   }
