@@ -102,7 +102,7 @@ class Board {
         blackPlayer.getAttackedFields(this);
 
         if (availableMoves.size() == 0) {
-          boolean stalemate = activePlayer.checkIfInCheck();
+          boolean stalemate = !activePlayer.checkIfInCheck();
           this.game.setGameState(stalemate ? GameState.DRAW : (!activePlayer.white ? GameState.WHITE_WIN : GameState.BLACK_WIN));
         }
       }

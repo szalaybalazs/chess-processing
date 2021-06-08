@@ -14,50 +14,58 @@ class King extends Actor {
       Move move = new Move(posX, posY + direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
     {
       Move move = new Move(posX + 1, posY + direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
     {
       Move move = new Move(posX - 1, posY + direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
     
     {
       Move move = new Move(posX, posY - direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
     {
       Move move = new Move(posX + 1, posY - direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
     {
       Move move = new Move(posX - 1, posY - direction, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
     {
       Move move = new Move(posX + 1, posY, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
     {
       Move move = new Move(posX - 1, posY, null);
       Actor targetActor = board.getActor(move.x, move.y);
       move.target = targetActor;
-      if (!(isAlly(targetActor) || player.checkIfFieldIsAttacked(move.x, move.y))) moves.add(move);
+      if (!isAlly(targetActor)) moves.add(move);
+      else if (move.target == null && !player.checkIfFieldIsAttacked(move.x, move.y)) moves.add(move);
     }
 
     for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;

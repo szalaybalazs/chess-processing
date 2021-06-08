@@ -48,7 +48,7 @@ class Player {
   // Remove actor
   public void removeActor(Actor actor) {
     int index = actors.indexOf(actor);
-    actors.remove(index);
+    if (index >= 0 && index < actors.size()) actors.remove(index);
   }
 
   // Get all actors of a player
