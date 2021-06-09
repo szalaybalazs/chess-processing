@@ -1,5 +1,7 @@
 // Actor move
 class Move {
+  Move effect;
+
   // Source actor
   public Actor source;
   

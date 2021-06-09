@@ -40,6 +40,7 @@ class Player {
 
   // Move actor
   public void moveActor(Actor actor, Move move) {
+    if (move.effect != null) move.effect.source.moveTo(move.effect);
     int index = actors.indexOf(actor);
     Actor newActor = actor.moveTo(move);
     if (newActor != actor) actors.set(index, newActor);
