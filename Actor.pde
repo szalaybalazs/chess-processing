@@ -18,6 +18,9 @@ class Move {
   }
 }
 
+int currentMove = 1;
+
+
 class Actor {
   // Unique id of actor
   public int id;
@@ -28,6 +31,10 @@ class Actor {
 
   // The forward direction of the actor, depends on color
   public int direction = 0;
+
+  // Store number of moves per actor
+  int numberOfMoves = 0;
+  int previousMove = 0;
 
   // Stored moves
   ArrayList<Move> previousMoves = new ArrayList<Move>();
@@ -120,6 +127,9 @@ class Actor {
   // This is where animation would happen
   public Actor moveTo(Move move) {
     previousMoves.add(move);
+    previousMove = currentMove;
+    numberOfMoves++;
+    currentMove++;
     setPosition(move.x, move.y);
     return this;
   }

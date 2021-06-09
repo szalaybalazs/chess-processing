@@ -6,7 +6,10 @@ class Pawn extends Actor {
 
   public Actor moveTo(Move move) {
     previousMoves.add(move);
+    previousMove = currentMove;
+    currentMove++;
     setPosition(move.x, move.y);
+    numberOfMoves++;
 
     if (move.y == 0 || move.y == 7) {
       Actor queen = new Queen(move.x, move.y, white);
@@ -34,7 +37,21 @@ class Pawn extends Actor {
     if (frontLeft != null && !isAlly(frontLeft)) moves.add(new Move(frontLeft.posX, frontLeft.posY, frontLeft));
     if (frontRight != null && !isAlly(frontRight)) moves.add(new Move(frontRight.posX, frontRight.posY, frontRight));
 
-    // TODO: special pawn moves
+    // en passant left
+    {
+      Actor target = opponent.getActor(posX - 1, posY);
+      Actor moveActor = board.getActor(posX - 1, posY + direction);
+      // println("en passant, target: ", target != null, " free tile: ", moveActor == null, " target position: ", target != null ? target.posY : -1);
+      if (target != null && target.name == "Pawn" && target.numberOfMoves == 1 && (target.posY == 3 || target.posY == 4) && moveActor == null) moves.add(new Move(posX - 1, posY + direction, target));
+    }
+    // en passant right
+    {
+      Actor target = opponent.getActor(posX + 1, posY);
+      Actor moveActor = board.getActor(posX + 1, posY + direction);
+      // println("en passant, target: ", target != null, " free tile: ", moveActor == null, " target position: ", target != null ? target.posY : -1);
+      if (target != null && target.name == "Pawn" && target.numberOfMoves == 1 && (target.posY == 3 || target.posY == 4) && moveActor == null) moves.add(new Move(posX + 1, posY + direction, target));
+    }
+
     for (int i = 0; i < moves.size(); i++) moves.get(i).source = this;
 
     return moves;

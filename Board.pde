@@ -121,12 +121,16 @@ class Board {
       }
     }
 
-    // Draw selection
+    // Draw moves
     if (selection) {
       for (int i = 0; i < moves.size(); i++) {
         Move move = moves.get(i);
         if (move.target == null) drawRect(move.x, move.y, 0, 255, 0, 120);
-        else drawRect(move.x, move.y, 255, 0, 0, 120);
+        else if (move.target.posX == move.x && move.target.posY == move.y) drawRect(move.x, move.y, 255, 0, 0, 120);
+        else {
+          drawRect(move.target.posX, move.target.posY, 255, 0, 0, 120);
+          drawRect(move.x, move.y, 0, 255, 0, 120);
+        }
       }
     }
 
