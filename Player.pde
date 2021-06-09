@@ -79,6 +79,16 @@ class Player {
     for(int i = 0; i < this.opponent.getActors().size(); i++) {
       Actor actor = this.opponent.getActors().get(i);
       if (actor.name != "King") moves.addAll(actor.getAvailableMoves(board));
+      else {
+        moves.add(new Move(actor.posX - 1, actor.posY - 1, this.getActor(actor.posX - 1, actor.posY - 1)));
+        moves.add(new Move(actor.posX, actor.posY - 1, this.getActor(actor.posX, actor.posY - 1)));
+        moves.add(new Move(actor.posX + 1, actor.posY - 1, this.getActor(actor.posX + 1, actor.posY - 1)));
+        moves.add(new Move(actor.posX - 1, actor.posY, this.getActor(actor.posX - 1, actor.posY)));
+        moves.add(new Move(actor.posX + 1, actor.posY, this.getActor(actor.posX + 1, actor.posY)));
+        moves.add(new Move(actor.posX - 1, actor.posY + 1, this.getActor(actor.posX - 1, actor.posY + 1)));
+        moves.add(new Move(actor.posX, actor.posY + 1, this.getActor(actor.posX, actor.posY + 1)));
+        moves.add(new Move(actor.posX + 1, actor.posY + 1, this.getActor(actor.posX + 1, actor.posY + 1)));
+      }
     }
 
     return moves;
