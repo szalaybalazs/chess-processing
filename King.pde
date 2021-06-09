@@ -70,7 +70,12 @@ class King extends Actor {
 
     // Castling right
     {
-      if (player.getActor(5, posY) == null && player.getActor(6, posY) == null) {
+      if (
+        player.getActor(5, posY) == null && 
+        !player.checkIfFieldIsAttacked(5, posY) &&
+        player.getActor(6, posY) == null &&
+        !player.checkIfFieldIsAttacked(6, posY)
+      ) {
         Actor rook = player.getActor(7, posY);
         if (numberOfMoves == 0 && rook.numberOfMoves == 0) {
           Move move = new Move(6, posY, null);
@@ -82,7 +87,14 @@ class King extends Actor {
     }
     // Castling left
     {
-      if (player.getActor(1, posY) == null && player.getActor(2, posY) == null && player.getActor(2, posY) == null) {
+      if (
+        player.getActor(1, posY) == null && 
+        !player.checkIfFieldIsAttacked(1, posY) &&
+        player.getActor(2, posY) == null && 
+        !player.checkIfFieldIsAttacked(2, posY) &&
+        player.getActor(3, posY) == null &&
+        !player.checkIfFieldIsAttacked(3, posY)
+        ) {
         Actor rook = player.getActor(0, posY);
         if (numberOfMoves == 0 && rook.numberOfMoves == 0) {
           Move move = new Move(2, posY, null);
