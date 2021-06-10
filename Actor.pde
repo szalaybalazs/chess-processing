@@ -176,10 +176,10 @@ class Actor {
     this.posX = move.x;
     this.posY = move.y;
     
-    if (move.target != null) opponent.removeActor(move.target);
+    if (move.target != null && opponent !== null) opponent.removeActor(move.target);
     ArrayList<Move> moves = player.generateAttackedfields(board);
     result = player.checkSolution(moves);
-    if (move.target != null) opponent.addActor(move.target);
+    if (move.target != null && opponent !== null) opponent.addActor(move.target);
     
     this.posX = prevX;
     this.posY = prevY;
