@@ -77,7 +77,7 @@ class King extends Actor {
         !player.checkIfFieldIsAttacked(6, posY)
       ) {
         Actor rook = player.getActor(7, posY);
-        if (numberOfMoves == 0 && rook.numberOfMoves == 0) {
+        if (rook != null && rook.name == "Rook" && numberOfMoves == 0 && rook.numberOfMoves == 0) {
           Move move = new Move(6, posY, null);
           move.effect = new Move(5, posY, null);
           move.effect.source = rook;
@@ -96,7 +96,7 @@ class King extends Actor {
         !player.checkIfFieldIsAttacked(3, posY)
         ) {
         Actor rook = player.getActor(0, posY);
-        if (numberOfMoves == 0 && rook.numberOfMoves == 0) {
+        if (rook != null && rook.name == "Rook" && numberOfMoves == 0 && rook.numberOfMoves == 0) {
           Move move = new Move(2, posY, null);
           move.effect = new Move(3, posY, null);
           move.effect.source = rook;
